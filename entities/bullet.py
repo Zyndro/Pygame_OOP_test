@@ -8,6 +8,14 @@ class bullets():
         self.pocisk = pygame.image.load('assets/bullet.png')
 
     def update(self,x ,win):
+        self.x=x
         self.y -= self.vel
         self.win = win
-        self.win.blit(self.pocisk, (x+13, self.y))
+        self.win.blit(self.pocisk, (self.x+13, self.y))
+
+    def collisionx(self):
+        return (self.x)
+
+    def collisiony(self):
+        return (self.y)
+

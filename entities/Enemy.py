@@ -5,7 +5,7 @@ class enemy():
 
 
     def __init__(self):
-        self.y=-200
+        self.y=-70
         self.x= random.randrange(35, 640 - 35)
         self.width=40
         self.heigth=69
@@ -26,11 +26,8 @@ class enemy():
             self.x = random.randrange(35, 640 - 35)
             self.y = -50
 
-"""         
-    def collide(self,X,Y):
-        if X <= self.x + self.width and X >= self.x:
-            if Y <= self.y + self.heigth and Y >= self.y:
-                return True
-        return False
-"""
+    def collisionx(self):
+        return (self.x)
 
+    def collisiony(self):
+        return (self.y)

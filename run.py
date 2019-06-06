@@ -18,12 +18,14 @@ class Game():
         self.raki = list()
         self.pociski = list()
         self.pociskixpoz = list()
+        self.clock = pygame.time.Clock()
+
+
 
 
 
     def game_intro(self):
         intro = True
-        clock = pygame.time.Clock()
         font = pygame.font.Font('freesansbold.ttf', 50)
         fontsmall = pygame.font.Font('freesansbold.ttf', 20)
         text = font.render("Rak Hunter", True, (255, 255, 255))
@@ -34,7 +36,7 @@ class Game():
             self.gameDisplay.blit(text, text_rect)
             self.gameDisplay.blit(text2, ((220, self.wysokosc_okna-100)))
 
-            clock.tick(30)
+            self.clock.tick(30)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -49,20 +51,31 @@ class Game():
 
     def run(self):
         run=True
-        clock=pygame.time.Clock()
         plejer = gracz()
-        self.raki.append(enemy())
+        points=0
+        respawn=60
 
 
         while run == True:
+            font = pygame.font.Font('freesansbold.ttf', 20)
+            text = font.render("Score: " + str(points), True, (0,0,0))
+
             bulletcounter=0
-            clock.tick(30)
+            self.clock.tick(30)
             pos = pygame.mouse.get_pos()
             self.gameDisplay.fill((255,255,255))
             plejer.update(pos[0],self.gameDisplay)
 
+
+            if points < 0:
+                gra.game_intro()
+                points=0
+
             for i in self.raki:
                 i.draw(self.gameDisplay)
+                #print(i.collisiony())
+                if i.collisiony() > 495:
+                    points -= 1
 
             for i in self.pociski:
                 i.update(self.pociskixpoz[bulletcounter],self.gameDisplay)
@@ -70,6 +83,14 @@ class Game():
                 if i.y < 0:
                     self.pociski.remove(i)
                     del self.pociskixpoz[0]
+                for r in self.raki:
+                    #print(r.collisionx(), i.collisionx())
+                    if r.collisionx() <= i.collisionx()+20 and r.collisionx()+20 >= i.collisionx() and i.collisiony() < r.collisiony()+69:
+                        print("deduwa occured")
+                        self.raki.remove(r)
+                        self.pociski.remove(i)
+                        del self.pociskixpoz[0]
+                        points+=1
 
             for event in pygame.event.get():
 
@@ -82,10 +103,15 @@ class Game():
                     self.pociski.append(bullets())
                     self.pociskixpoz.append(pos[0])
 
-                    print(self.pociskixpoz)
-
-
+            pygame.draw.rect(self.gameDisplay, (255, 250, 0), [0, 0, self.szerokosc_okna, 20])
+            self.gameDisplay.blit(text, (0, 0))
             self.draw()
+            respawn-=1
+
+            if respawn < 0:
+                self.raki.append(enemy())
+                respawn=60
+            print(respawn)
 
 
 
