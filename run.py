@@ -67,7 +67,9 @@ class Game():
             for i in self.pociski:
                 i.update(self.pociskixpoz[bulletcounter],self.gameDisplay)
                 bulletcounter+=1
-
+                if i.y < 0:
+                    self.pociski.remove(i)
+                    del self.pociskixpoz[0]
 
             for event in pygame.event.get():
 
