@@ -1,6 +1,4 @@
 import pygame
-import time
-import random
 from entities.Player import gracz
 from entities.Enemy import enemy
 from entities.bullet import bullets
@@ -68,6 +66,9 @@ class Game():
 
 
             if points < 0:
+                self.raki.clear()
+                self.pociski.clear()
+                self.pociskixpoz.clear()
                 gra.game_intro()
                 points=0
 
@@ -80,17 +81,18 @@ class Game():
             for i in self.pociski:
                 i.update(self.pociskixpoz[bulletcounter],self.gameDisplay)
                 bulletcounter+=1
-                if i.y < 0:
-                    self.pociski.remove(i)
-                    del self.pociskixpoz[0]
+                if i.collisiony() < 0:
+                   self.pociski.remove(i)
+                   del self.pociskixpoz[0]
                 for r in self.raki:
                     #print(r.collisionx(), i.collisionx())
                     if r.collisionx() <= i.collisionx()+20 and r.collisionx()+20 >= i.collisionx() and i.collisiony() < r.collisiony()+69:
                         print("deduwa occured")
                         self.raki.remove(r)
-                        self.pociski.remove(i)
-                        del self.pociskixpoz[0]
+                        i.collided=True
                         points+=1
+
+
 
             for event in pygame.event.get():
 
