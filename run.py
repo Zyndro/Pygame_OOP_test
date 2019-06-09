@@ -15,7 +15,6 @@ class Game():
         pygame.mouse.set_visible(0)
         self.raki = list()
         self.pociski = list()
-        self.pociskixpoz = list()
         self.clock = pygame.time.Clock()
 
 
@@ -49,7 +48,7 @@ class Game():
 
     def run(self):
         run=True
-        plejer = gracz()
+        plejer = gracz() #spawning player
         points=0
         respawn=60
 
@@ -58,17 +57,15 @@ class Game():
             font = pygame.font.Font('freesansbold.ttf', 20)
             text = font.render("Score: " + str(points), True, (0,0,0))
 
-            bulletcounter=0
             self.clock.tick(30)
             pos = pygame.mouse.get_pos()
             self.gameDisplay.fill((255,255,255))
             plejer.update(pos[0],self.gameDisplay)
 
 
-            if points < 0:
+            if points < 0: #restarting the game on negative points
                 self.raki.clear()
                 self.pociski.clear()
-                self.pociskixpoz.clear()
                 gra.game_intro()
                 points=0
 
@@ -79,17 +76,14 @@ class Game():
                     points -= 1
 
             for i in self.pociski:
-                i.update(self.pociskixpoz[bulletcounter],self.gameDisplay)
-                bulletcounter+=1
-                if i.collisiony() < 0:
+                i.update(self.gameDisplay)
+                if i.collisiony() < 0: #bullets leaving the gamearea
                    self.pociski.remove(i)
-                   del self.pociskixpoz[0]
-                for r in self.raki:
+                for r in self.raki: #collision between bullets and cancers
                     #print(r.collisionx(), i.collisionx())
                     if r.collisionx() <= i.collisionx()+20 and r.collisionx()+20 >= i.collisionx() and i.collisiony() < r.collisiony()+69:
                         print("deduwa occured")
                         self.raki.remove(r)
-                        i.collided=True
                         points+=1
 
 
@@ -102,8 +96,8 @@ class Game():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     print(pos)
                     self.shot.play()
-                    self.pociski.append(bullets())
-                    self.pociskixpoz.append(pos[0])
+                    self.pociski.append(bullets(pos[0])) #spawning bullets(shooting)
+
 
             pygame.draw.rect(self.gameDisplay, (255, 250, 0), [0, 0, self.szerokosc_okna, 20])
             self.gameDisplay.blit(text, (0, 0))
