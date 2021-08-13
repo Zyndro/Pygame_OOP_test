@@ -5,7 +5,7 @@ class bullets():
     def __init__(self,x):
         self.x = x
         self.y = (480 - 45)
-        self.vel=5
+        self.vel=12
         self.pocisk = pygame.image.load('assets/bullet.png')
 
 
