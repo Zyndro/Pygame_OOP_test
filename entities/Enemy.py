@@ -25,6 +25,9 @@ class enemy():
         if self.y > 500:
             self.x = random.randrange(35, 640 - 35)
             self.y = -50
+            self.vel = 5
+        if self.y > 406:
+            self.vel = 20
 
     def collisionx(self):
         return (self.x)
