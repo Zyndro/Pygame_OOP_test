@@ -1,7 +1,12 @@
-# Pygame_OOP_test
-Pygame testing grounds
+# Pygame_test
+Trash game, play at your own risk
 
-Requires pygame and random module
+
+requires pygame
+
+```bash
+pip install pygame
+```
 
 
 ![alt text](http://i.imgur.com/BBjXsYL.png)
